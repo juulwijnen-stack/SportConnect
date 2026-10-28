@@ -1,0 +1,72 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="dashboard">
+
+    <section class="box profile">
+        <div class="avatar">@(Model.Username.Length > 0 ? Model.Username[..1].ToUpperInvariant() : "?")</div>
+        <div class="profile-text">
+            <strong>Profile</strong>
+            <span>@Model.Username</span>
+        </div>
+        <form method="post" asp-page="Logout">
+            <button type="submit" class="btn small">Log out</button>
+        </form>
+    </section>
+
+    @* Het filter staat er alleen voor de weergave en werkt niet *@
+    <section class="box filter">
+        <h2>Filter</h2>
+        <div class="filter-fields">
+            <input type="text" disabled aria-label="Filter 1" />
+            <input type="text" disabled aria-label="Filter 2" />
+            <input type="text" disabled aria-label="Filter 3" />
+        </div>
+    </section>
+
+    <section class="box announcements">
+        <a asp-page="Announcements" class="box-header">
+            <span>Announcements</span>
+            <span aria-hidden="true">›</span>
+        </a>
+        <ul class="list">
+            @foreach (var a in Model.Announcements)
+            {
+                <li>
+                    <strong>@a.Title</strong>
+                    <small>@a.PostedAt.ToString("d MMM")</small>
+                </li>
+            }
+        </ul>
+    </section>
+
+    <section class="box activities">
+        <div class="box-header">
+            <span>Activities</span>
+            <a asp-page="/Activities/Create" class="plus" title="Create activity" aria-label="Create activity">+</a>
+        </div>
+
+        <div class="cards">
+            @if (!Model.Activities.Any())
+            {
+                <p class="muted">No activities yet. Create the first one with the + button!</p>
+            }
+            @foreach (var a in Model.Activities)
+            {
+                <a asp-page="/Activities/Details" asp-route-id="@a.Id" class="card">
+                    <div class="card-title">@a.Title</div>
+                    <div class="card-meta">
+                        <span class="tag">@a.Level</span>
+                    </div>
+                    <div class="card-line">@a.StartsAt.ToString("ddd d MMM, HH:mm")</div>
+                    <div class="card-line">@a.Location</div>
+                    <div class="card-line muted">@a.Participants.Count / @a.MaxParticipants participants</div>
+                </a>
+            }
+        </div>
+    </section>
+
+</div>

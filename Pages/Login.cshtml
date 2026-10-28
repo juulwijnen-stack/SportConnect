@@ -1,0 +1,29 @@
+@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="box auth-box">
+    <h1>Log in</h1>
+
+    <form method="post">
+        @if (!string.IsNullOrEmpty(Model.Error))
+        {
+            <div class="error">@Model.Error</div>
+        }
+
+        <label asp-for="Username">Username</label>
+        <input asp-for="Username" autocomplete="username" autofocus />
+        <span asp-validation-for="Username" class="field-error"></span>
+
+        <label asp-for="Password">Password</label>
+        <input asp-for="Password" autocomplete="current-password" />
+        <span asp-validation-for="Password" class="field-error"></span>
+
+        <button type="submit" class="btn primary">Log in</button>
+    </form>
+
+    @* Deze knop doet bewust niets (accounts aanmaken is niet beschikbaar) *@
+    <button type="button" class="btn">Create account</button>
+</div>

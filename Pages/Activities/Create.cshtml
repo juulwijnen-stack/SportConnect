@@ -1,0 +1,40 @@
+@page
+@model CreateModel
+
+@functions {
+    public class Input
+    {
+    }
+}
+@{
+    ViewData["Title"] = "Create activity";
+}
+
+<div class="page-header box">
+    <a asp-page="/Index" class="home" title="Back to home" aria-label="Back to home">⌂</a>
+    <h1>Create activity</h1>
+</div>
+
+<section class="box content">
+    <form method="post" class="form">
+        <div asp-validation-summary="ModelOnly" class="error"></div>
+
+        <label asp-for="Input.Title">Title (mention the sport)</label>
+        <input asp-for="Input.Title" placeholder="e.g. Football 5 vs 5" />
+        <span asp-validation-for="Input.Title" class="field-error"></span>
+
+        <label asp-for="Input.StartsAt">Date and time</label>
+        <input asp-for="Input.StartsAt" />
+        <span asp-validation-for="Input.StartsAt" class="field-error"></span>
+
+        <label asp-for="Input.Location">Location</label>
+        <input asp-for="Input.Location" />
+        <span asp-validation-for="Input.Location" class="field-error"></span>
+
+        <label asp-for="Input.Description">Description</label>
+        <textarea asp-for="Input.Description" rows="4"></textarea>
+        <span asp-validation-for="Input.Description" class="field-error"></span>
+
+        <button type="submit" class="btn primary">Create activity</button>
+    </form>
+</section>

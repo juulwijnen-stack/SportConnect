@@ -1,0 +1,75 @@
+@page "{id:int}"
+@model DetailsModel
+@{
+    ViewData["Title"] = Model.Activity.Title;
+    var a = Model.Activity;
+}
+
+<div class="page-header box">
+    <a asp-page="/Index" class="home" title="Back to home" aria-label="Back to home">⌂</a>
+    <h1>@a.Title</h1>
+</div>
+
+<section class="box content">
+    <div class="card-meta">
+        <span class="tag">@a.Level</span>
+    </div>
+
+    <dl class="details">
+        <dt>When</dt>
+        <dd>@a.StartsAt.ToString("dddd d MMMM yyyy, HH:mm")</dd>
+        <dt>Where</dt>
+        <dd>@a.Location</dd>
+        <dt>Organizer</dt>
+        <dd>@a.Organizer.Username</dd>
+        <dt>Participants</dt>
+        <dd>@a.Participants.Count / @a.MaxParticipants</dd>
+    </dl>
+
+    @if (!string.IsNullOrWhiteSpace(a.Description))
+    {
+        <p>@a.Description</p>
+    }
+
+    @if (a.StartsAt <= DateTime.Now)
+    {
+        <p class="muted">This activity has already started.</p>
+    }
+    else if (Model.IsJoined)
+    {
+        @if (a.OrganizerId == Model.CurrentUserId)
+        {
+            <p class="muted">You are the organizer of this activity.</p>
+        }
+        else
+        {
+            <form method="post" asp-page-handler="Leave" asp-route-id="@a.Id">
+                <button type="submit" class="btn">Leave activity</button>
+            </form>
+        }
+    }
+    else if (Model.IsFull)
+    {
+        <p class="muted">This activity is full.</p>
+    }
+    else
+    {
+        <form method="post" asp-page-handler="Join" asp-route-id="@a.Id">
+            <button type="submit" class="btn primary">Join activity</button>
+        </form>
+    }
+
+    <h2>Participants</h2>
+    <ul class="list">
+        @foreach (var p in a.Participants.OrderBy(p => p.User.Username))
+        {
+            <li>
+                @p.User.Username
+                @if (p.UserId == a.OrganizerId)
+                {
+                    <small class="muted">(organizer)</small>
+                }
+            </li>
+        }
+    </ul>
+</section>

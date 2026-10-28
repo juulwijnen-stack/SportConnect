@@ -1,0 +1,25 @@
+@page
+@model AnnouncementsModel
+@{
+    ViewData["Title"] = "Announcements";
+}
+
+<div class="page-header box">
+    <a asp-page="Index" class="home" title="Back to home" aria-label="Back to home">⌂</a>
+    <h1>Announcements</h1>
+</div>
+
+<section class="box content">
+    @if (!Model.Announcements.Any())
+    {
+        <p class="muted">No announcements yet.</p>
+    }
+    @foreach (var a in Model.Announcements)
+    {
+        <article class="announcement">
+            <h2>@a.Title</h2>
+            <small class="muted">@a.PostedAt.ToString("d MMMM yyyy")</small>
+            <p>@a.Text</p>
+        </article>
+    }
+</section>
